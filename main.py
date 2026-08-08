@@ -1,14 +1,25 @@
 from tkinter import *
+from tkinter import messagebox
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save_password():
-    new_entry = f"Website: {website_entry.get()} | Email: {email_entry.get()} | Password: {password_entry.get()} \n"
-    with open("password.txt", "a") as file:
-        file.write(new_entry)
-    website_entry.delete(0, END)
-    website_entry.focus()
-    password_entry.delete(0, END)
+    website = website_entry.get()
+    email = email_entry.get()
+    password = password_entry.get()
+
+    if website == "" or email == "" or password == "":
+        messagebox.showerror("Error", "Please enter all required information")
+    else:
+        new_entry = f"Website: {website} | Email: {email} | Password: {password} \n"
+        save = messagebox.askokcancel("Save password?", f"Entered details are as follows: \nWebsite: {website} \nEmail: {email} \nPassword: {password}\nDo you want to save?")
+
+        if save:
+            with open("password.txt", "a") as file:
+                file.write(new_entry)
+            website_entry.delete(0, END)
+            website_entry.focus()
+            password_entry.delete(0, END)
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title("Password Manager")
