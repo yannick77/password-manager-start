@@ -25,7 +25,6 @@ def generate_password():
     password_entry.delete(0, END)
     password_entry.insert(0, string=password)
     pyperclip.copy(password)
-
 # ---------------------------- SEARCH FILE ------------------------------- #
 def search_records():
     website = website_entry.get()
@@ -40,10 +39,6 @@ def search_records():
                 messagebox.showinfo(title=f"Password Details for {website}", message=f"Email: {email}\nPassword: {password}")
         except (FileNotFoundError, json.decoder.JSONDecodeError, KeyError):
             messagebox.showerror("Error", f"No login details found for {website}")
-
-
-
-
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save_password():
     website = website_entry.get()
@@ -55,8 +50,6 @@ def save_password():
         "password": password
         }
     }
-
-
     if len(website)==0 or len(email)==0 or len(password) == 0:
         messagebox.showerror("Error", "Please enter all required information")
     else:
@@ -67,11 +60,9 @@ def save_password():
             #create file if not exist
         except (FileNotFoundError, json.decoder.JSONDecodeError):
             data = new_entry
-
         else:
             # update with new data
             data.update(new_entry)
-
         finally:
             #write data to file
             with open("password.json", "w") as data_file:
@@ -117,7 +108,7 @@ generate_password_button.grid(row=3, column=2)
 add_password_button = Button(text="Add", width=36, command=save_password)
 add_password_button.grid(row=4, column=1, columnspan=2)
 
-search_button = Button(text="Search", command=search_records)
+search_button = Button(text="Search", command=search_records, width=14)
 search_button.grid(row=1, column=2)
 
 
