@@ -35,14 +35,11 @@ def save_password():
         messagebox.showerror("Error", "Please enter all required information")
     else:
         new_entry = f"Website: {website} | Email: {email} | Password: {password} \n"
-        save = messagebox.askokcancel("Save password?", f"Entered details are as follows: \nWebsite: {website} \nEmail: {email} \nPassword: {password}\nDo you want to save?")
-
-        if save:
-            with open("password.txt", "a") as file:
-                file.write(new_entry)
-            website_entry.delete(0, END)
-            website_entry.focus()
-            password_entry.delete(0, END)
+        with open("password.txt", "a") as file:
+            file.write(new_entry)
+        website_entry.delete(0, END)
+        website_entry.focus()
+        password_entry.delete(0, END)
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title("Password Manager")
