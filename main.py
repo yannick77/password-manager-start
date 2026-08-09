@@ -47,7 +47,7 @@ def save_password():
                 # read old data
                 data = json.load(data_file)
             #create file if not exist
-        except FileNotFoundError, json.decoder.JSONDecodeError:
+        except (FileNotFoundError, json.decoder.JSONDecodeError):
             data = new_entry
 
         else:
