@@ -1,3 +1,4 @@
+import email
 from tkinter import *
 from tkinter import messagebox
 import random
@@ -24,6 +25,23 @@ def generate_password():
     password_entry.delete(0, END)
     password_entry.insert(0, string=password)
     pyperclip.copy(password)
+
+# ---------------------------- SEARCH FILE ------------------------------- #
+def search_records():
+    website = website_entry.get()
+    if len(website)==0:
+        messagebox.showerror("Error", "Please enter a website")
+    else:
+        try:
+            with open("password.json", "r") as data_file:
+                data = json.load(data_file)
+                email = data[website]["email"]
+                password = data[website]["password"]
+                messagebox.showinfo(title=f"Password Details for {website}", message=f"Email: {email}\nPassword: {password}")
+        except (FileNotFoundError, json.decoder.JSONDecodeError, KeyError):
+            messagebox.showerror("Error", f"No login details found for {website}")
+
+
 
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
@@ -81,11 +99,11 @@ password_label = Label( text="Password:")
 password_label.grid(row=3, column=0)
 
 #Entries
-website_entry = Entry(width=35)
-website_entry.grid(row=1, column=1, columnspan=2)
+website_entry = Entry(width=21)
+website_entry.grid(row=1, column=1)
 website_entry.focus()
 
-email_entry = Entry(width=35)
+email_entry = Entry(width=40)
 email_entry.grid(row=2, column=1, columnspan=2)
 email_entry.insert(0, "your_email@your_domain")
 
@@ -98,6 +116,9 @@ generate_password_button.grid(row=3, column=2)
 
 add_password_button = Button(text="Add", width=36, command=save_password)
 add_password_button.grid(row=4, column=1, columnspan=2)
+
+search_button = Button(text="Search", command=search_records)
+search_button.grid(row=1, column=2)
 
 
 window.mainloop()
