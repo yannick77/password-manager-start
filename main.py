@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import random
 import pyperclip
+import json
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def generate_password():
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -30,13 +31,25 @@ def save_password():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
+    new_entry = {
+        website: {
+        "email" :email,
+        "password": password
+        }
+    }
+
 
     if len(website)==0 or len(email)==0 or len(password) == 0:
         messagebox.showerror("Error", "Please enter all required information")
     else:
-        new_entry = f"Website: {website} | Email: {email} | Password: {password} \n"
-        with open("password.txt", "a") as file:
-            file.write(new_entry)
+        with open("password.json", "r") as data_file:
+            #read old data
+            data = json.load(data_file)
+            #update with new data
+            data.update(new_entry)
+            #saving updated data
+        with open("password.json", "w") as data_file:
+            json.dump(data,data_file, indent=4)
         website_entry.delete(0, END)
         website_entry.focus()
         password_entry.delete(0, END)
