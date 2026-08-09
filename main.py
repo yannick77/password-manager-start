@@ -42,17 +42,25 @@ def save_password():
     if len(website)==0 or len(email)==0 or len(password) == 0:
         messagebox.showerror("Error", "Please enter all required information")
     else:
-        with open("password.json", "r") as data_file:
-            #read old data
-            data = json.load(data_file)
-            #update with new data
+        try:
+            with open("password.json", "r") as data_file:
+                # read old data
+                data = json.load(data_file)
+            #create file if not exist
+        except FileNotFoundError, json.decoder.JSONDecodeError:
+            data = new_entry
+
+        else:
+            # update with new data
             data.update(new_entry)
-            #saving updated data
-        with open("password.json", "w") as data_file:
-            json.dump(data,data_file, indent=4)
-        website_entry.delete(0, END)
-        website_entry.focus()
-        password_entry.delete(0, END)
+
+        finally:
+            #write data to file
+            with open("password.json", "w") as data_file:
+                json.dump(data, data_file, indent=4)
+            website_entry.delete(0, END)
+            website_entry.focus()
+            password_entry.delete(0, END)
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title("Password Manager")
